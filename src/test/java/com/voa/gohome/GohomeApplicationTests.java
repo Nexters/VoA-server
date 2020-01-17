@@ -1,4 +1,4 @@
-package com.nexters.gohome;
+package com.voa.gohome;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

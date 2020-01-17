@@ -1,1 +1,0 @@
-# VoA-server

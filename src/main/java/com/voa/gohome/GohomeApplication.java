@@ -1,4 +1,4 @@
-package com.nexters.gohome;
+package com.voa.gohome;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
