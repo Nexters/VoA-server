@@ -1,4 +1,4 @@
-package com.voa.gohome;
+package com.voa.goodbam;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
