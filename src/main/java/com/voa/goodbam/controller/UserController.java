@@ -14,8 +14,9 @@ public class UserController {
 
     @PostMapping("/new")
     public User newUser(@RequestParam String kakaoId,
-                     @RequestParam String name,
-                     @RequestParam String isAppUser) {
+                        @RequestParam int uuid,
+                        @RequestParam String name,
+                        @RequestParam String isAppUser) {
 
         return null;
     }

@@ -20,9 +20,12 @@ public class User {
     private List<UserStatusInRoom> rooms;
     private boolean isAppUser;
     private String pushCode;
+    private int uuid;
+    private String os;
 
-    public static User create() {
-        return new User(1, "id", "sang", null, false, "push");
-    }
+
+//    public static User create() {
+//        return new User(1, "id", "sang", null, false, "push");
+//    }
 
 }

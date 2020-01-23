@@ -17,17 +17,19 @@ public class RoomController {
     @PostMapping("/new")
     public Room room(@RequestBody String roomName) {
 
+        roomRepository.save(Room.create(roomName));
+
         return null;
     }
 
     @PutMapping("/user")
-    public Room joinRoom(@RequestParam String roomName, @RequestParam String kakaoId) {
+    public Room joinRoom(@RequestParam long roomId, @RequestParam String kakaoId) {
 
         return null;
     }
 
     @DeleteMapping("/user")
-    public Room leaveRoom(@RequestParam String roomName, @RequestParam String kakaoId) {
+    public Room leaveRoom(@RequestParam long roomId, @RequestParam String userId) {
 
         return null;
     }

@@ -2,6 +2,7 @@ package com.voa.goodbam.domain.room;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Room {
 
     @Id
@@ -21,9 +23,17 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private List<UserStatusInRoom> users;
 
-    private String generateUniqueCode() {
+    public static Room create(String name) {
+        return new Room(-1, name, generateUniqueCode(), null);
+    }
+
+    private static String generateUniqueCode() {
 
         return "";
+    }
+
+    private void sendLinksToRoomMembers() {
+
     }
 
 }
