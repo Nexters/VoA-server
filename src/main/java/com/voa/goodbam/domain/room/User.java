@@ -9,11 +9,12 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @Builder
+@Getter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String kakaoId;
     private String name;
 
@@ -25,14 +26,14 @@ public class User {
     private String os;
 
 
-    public static User create(String kakaoId, String name, boolean isAppUser, String pushCode, int uuid, String os) {
+    public static User create(User user) {
         return User.builder()
-                .kakaoId(kakaoId)
-                .name(name)
-                .isAppUser(isAppUser)
-                .pushCode(pushCode)
-                .os(os)
-                .uuid(uuid).build();
+                .kakaoId(user.getKakaoId())
+                .name(user.getName())
+                .isAppUser(user.isAppUser())
+                .pushCode(user.getPushCode())
+                .os(user.getOs())
+                .uuid(user.getUuid()).build();
 //        return new User(1, "id", "sang", null, false, "push");
     }
 
