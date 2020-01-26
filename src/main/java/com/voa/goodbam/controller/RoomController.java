@@ -1,9 +1,8 @@
 package com.voa.goodbam.controller;
 
-import com.voa.goodbam.domain.room.Room;
-import com.voa.goodbam.domain.room.UserStatusInRoom;
+import com.voa.goodbam.model.domain.room.Room;
+import com.voa.goodbam.model.domain.room.UserStatusInRoom;
 import com.voa.goodbam.repository.RoomRepository;
-import com.voa.goodbam.repository.UserRepsitory;
 import com.voa.goodbam.repository.UserStatusInRoomRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

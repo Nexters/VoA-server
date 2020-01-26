@@ -1,5 +1,6 @@
-package com.voa.goodbam.domain.room;
+package com.voa.goodbam.model.domain.room;
 
+import com.voa.goodbam.model.dto.user.CreateUserDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,14 +26,14 @@ public class User {
     private String os;
 
 
-    public static User create(String kakaoId, String name, boolean isAppUser, String pushCode, int uuid, String os) {
+    public static User create(CreateUserDto createUserDto) {
         return User.builder()
-                .kakaoId(kakaoId)
-                .name(name)
-                .isAppUser(isAppUser)
-                .pushCode(pushCode)
-                .os(os)
-                .uuid(uuid).build();
+                .kakaoId(createUserDto.getKakaoId())
+                .name(createUserDto.getName())
+                .isAppUser(createUserDto.isAppUser())
+                .pushCode(createUserDto.getPushCode())
+                .os(createUserDto.getOs())
+                .uuid(createUserDto.getUuid()).build();
 //        return new User(1, "id", "sang", null, false, "push");
     }
 

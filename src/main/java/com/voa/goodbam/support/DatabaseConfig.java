@@ -57,7 +57,7 @@ public class DatabaseConfig
     {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(makeDataSource(databaseProperty.getUrl()));
-        entityManagerFactoryBean.setPackagesToScan(new String[]{"com.voa.goodbam.domain.room"});
+        entityManagerFactoryBean.setPackagesToScan(new String[]{"com.voa.goodbam.model.domain.room"});
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
 

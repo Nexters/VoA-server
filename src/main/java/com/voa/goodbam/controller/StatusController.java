@@ -1,8 +1,8 @@
 package com.voa.goodbam.controller;
 
-import com.voa.goodbam.domain.room.HomeComingStatus;
-import com.voa.goodbam.domain.room.InvitationStatus;
-import com.voa.goodbam.domain.room.User;
+import com.voa.goodbam.model.domain.room.HomeComingStatus;
+import com.voa.goodbam.model.domain.room.InvitationStatus;
+import com.voa.goodbam.model.domain.room.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
