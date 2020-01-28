@@ -1,22 +1,20 @@
 package com.voa.goodbam.domain.room;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Table
 @Entity
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String code;
 
@@ -24,7 +22,7 @@ public class Room {
     private List<UserStatusInRoom> users;
 
     public static Room create(String name) {
-        return new Room(-1, name, generateUniqueCode(), null);
+        return Room.builder().name(name).code(generateUniqueCode()).build();
     }
 
     private static String generateUniqueCode() {

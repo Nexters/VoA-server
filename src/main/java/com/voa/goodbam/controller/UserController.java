@@ -13,11 +13,8 @@ public class UserController {
     private UserRepsitory userRepsitory;
 
     @PostMapping("/new")
-    public User newUser(@RequestParam String kakaoId,
-                        @RequestParam int uuid,
-                        @RequestParam String name,
-                        @RequestParam String isAppUser) {
-
+    public User newUser(User user) {
+        userRepsitory.save(User.create(user));
         return null;
     }
 

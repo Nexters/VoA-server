@@ -1,18 +1,21 @@
 package com.voa.goodbam.domain.room;
 
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Table
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Getter
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String kakaoId;
     private String name;
 
@@ -24,8 +27,15 @@ public class User {
     private String os;
 
 
-//    public static User create() {
+    public static User create(User user) {
+        return User.builder()
+                .kakaoId(user.getKakaoId())
+                .name(user.getName())
+                .isAppUser(user.isAppUser())
+                .pushCode(user.getPushCode())
+                .os(user.getOs())
+                .uuid(user.getUuid()).build();
 //        return new User(1, "id", "sang", null, false, "push");
-//    }
+    }
 
 }
