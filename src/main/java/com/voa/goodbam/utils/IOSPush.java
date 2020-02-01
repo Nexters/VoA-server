@@ -1,4 +1,4 @@
-package com.voa.goodbam.support;
+package com.voa.goodbam.utils;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

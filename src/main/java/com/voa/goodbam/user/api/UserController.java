@@ -1,7 +1,7 @@
-package com.voa.goodbam.controller;
+package com.voa.goodbam.user.api;
 
-import com.voa.goodbam.domain.room.User;
-import com.voa.goodbam.repository.UserRepsitory;
+import com.voa.goodbam.user.domain.User;
+import com.voa.goodbam.user.domain.UserRepsitory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

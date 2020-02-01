@@ -1,6 +1,5 @@
-package com.voa.goodbam.repository;
+package com.voa.goodbam.room.domain;
 
-import com.voa.goodbam.domain.room.Room;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

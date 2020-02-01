@@ -1,4 +1,4 @@
-package com.voa.goodbam.support;
+package com.voa.goodbam.utils;
 
 public class KakaoPush {
 

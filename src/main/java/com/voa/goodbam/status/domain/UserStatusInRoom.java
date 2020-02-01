@@ -1,5 +1,9 @@
-package com.voa.goodbam.domain.room;
+package com.voa.goodbam.status.domain;
 
+import com.voa.goodbam.room.domain.Room;
+import com.voa.goodbam.status.type.HomeComingStatus;
+import com.voa.goodbam.status.type.InvitationStatus;
+import com.voa.goodbam.user.domain.User;
 import lombok.*;
 
 import javax.persistence.*;

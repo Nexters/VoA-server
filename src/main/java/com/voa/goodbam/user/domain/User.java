@@ -1,5 +1,6 @@
-package com.voa.goodbam.domain.room;
+package com.voa.goodbam.user.domain;
 
+import com.voa.goodbam.status.domain.UserStatusInRoom;
 import lombok.*;
 
 import javax.persistence.*;

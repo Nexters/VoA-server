@@ -1,4 +1,4 @@
-package com.voa.goodbam.domain.room;
+package com.voa.goodbam.status.type;
 
 public enum InvitationStatus {
     INVITED, ACCEPTED

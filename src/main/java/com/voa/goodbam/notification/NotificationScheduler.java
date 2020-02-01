@@ -1,6 +1,6 @@
-package com.voa.goodbam.domain.notification;
+package com.voa.goodbam.notification;
 
-import com.voa.goodbam.domain.room.User;
+import com.voa.goodbam.user.domain.User;
 
 import java.time.LocalDateTime;
 

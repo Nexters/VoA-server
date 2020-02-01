@@ -1,4 +1,4 @@
-package com.voa.goodbam.support;
+package com.voa.goodbam.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,9 +1,9 @@
-package com.voa.goodbam.controller;
+package com.voa.goodbam.room.api;
 
-import com.voa.goodbam.domain.room.Room;
-import com.voa.goodbam.domain.room.UserStatusInRoom;
-import com.voa.goodbam.repository.RoomRepository;
-import com.voa.goodbam.repository.UserStatusInRoomRespository;
+import com.voa.goodbam.room.domain.Room;
+import com.voa.goodbam.status.domain.UserStatusInRoom;
+import com.voa.goodbam.room.domain.RoomRepository;
+import com.voa.goodbam.status.domain.UserStatusInRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +16,12 @@ public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
-    private UserStatusInRoomRespository userStatusInRoomRespository;
+    private UserStatusInRoomRepository userStatusInRoomRepository;
     @PostMapping("/new")
     public Room room(@RequestParam String roomName, @RequestParam long userId) {
         Room newRoom = roomRepository.save(Room.create(roomName));
         try{
-            userStatusInRoomRespository.save(UserStatusInRoom.create(newRoom, userId));
+            userStatusInRoomRepository.save(UserStatusInRoom.create(newRoom, userId));
         }catch (Exception exception){
             roomRepository.delete(newRoom);
         }
