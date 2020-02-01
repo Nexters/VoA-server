@@ -21,7 +21,8 @@ import java.util.HashMap;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
-@EnableJpaRepositories(basePackages = "com.voa.goodbam.repository", entityManagerFactoryRef = "entityManager", transactionManagerRef = "platformTransactionManager")
+@EnableJpaRepositories(entityManagerFactoryRef = "entityManager",
+        transactionManagerRef = "platformTransactionManager")
 @EnableJpaAuditing
 public class DatabaseConfig
 {
@@ -57,7 +58,7 @@ public class DatabaseConfig
     {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(makeDataSource(databaseProperty.getUrl()));
-        entityManagerFactoryBean.setPackagesToScan(new String[]{"com.voa.goodbam.domain.room"});
+        entityManagerFactoryBean.setPackagesToScan("com.voa.goodbam.*.domain");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
 
