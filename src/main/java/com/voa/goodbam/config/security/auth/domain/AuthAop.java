@@ -51,6 +51,7 @@ public class AuthAop
                     .statusCode(StatusCode.UNAUTHORIZED)
                     .message(Message.AUTH_FAIL)
                     .build(), HttpStatus.OK);
+            return new ResponseEntity(DefaultResponse.of(StatusCode.UNAUTHORIZED,Message.AUTH_FAIL), HttpStatus.OK);
         }
         return pjp.proceed(pjp.getArgs());
     }

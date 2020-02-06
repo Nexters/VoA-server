@@ -10,7 +10,8 @@ public enum Message {
     AUTH_FAIL("인증 실패"),
     AUTH_SUCCESS("인증 성공"),
     LOGIN_SUCCESS("로그인 성공"),
-    LOGIN_FAIL("로그인 실패");
+    LOGIN_FAIL("로그인 실패"),
+    NO_CONTENT("데이터 없음");
 
     private final String message;
 
