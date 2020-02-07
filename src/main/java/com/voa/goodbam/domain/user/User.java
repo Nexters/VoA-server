@@ -1,7 +1,11 @@
 package com.voa.goodbam.domain.user;
 
+import com.voa.goodbam.domain.messenger.Messenger;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,4 +30,8 @@ public class User {
     private int uuid;
     private String os;
     private String profileImage;
+    @OneToMany(mappedBy = "sender")
+    private List<Messenger> senderMessages;
+    @OneToMany(mappedBy = "target")
+    private List<Messenger> targetMessages;
 }
