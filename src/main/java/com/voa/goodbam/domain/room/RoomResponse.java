@@ -1,4 +1,4 @@
-package com.voa.goodbam.room.dto;
+package com.voa.goodbam.domain.room;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -7,7 +7,7 @@ import com.voa.goodbam.domain.room.Room;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import com.voa.goodbam.repository.RoomRepository;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
-import com.voa.goodbam.room.dto.RoomResponse;
+import com.voa.goodbam.domain.room.RoomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,15 +51,13 @@ public class RoomController {
     public ResponseEntity getRoomsByUserId(@PathVariable Long userId) {
 
         List<Room> rooms = roomRepository.findByUsers_User_Id(userId);
-        if(rooms.size()==0){
+        if(rooms.isEmpty()){
             return new ResponseEntity(DefaultResponse.of(StatusCode.NO_CONTENT, Message.NO_CONTENT,rooms) , HttpStatus.OK);
         }
         List<RoomResponse> roomDatas = new ArrayList<>();
         for(Room room:rooms){
             roomDatas.add(RoomResponse.builder().roomId(room.getId()).roomTitle(room.getName()).build());
         }
-
         return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK,roomDatas) , HttpStatus.OK);
     }
-
 }

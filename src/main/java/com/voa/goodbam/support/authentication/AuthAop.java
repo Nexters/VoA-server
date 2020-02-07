@@ -46,10 +46,6 @@ public class AuthAop
     {
         if(validToken() == false)
         {
-            return new ResponseEntity(DefaultResponse.builder()
-                    .statusCode(StatusCode.UNAUTHORIZED)
-                    .message(Message.AUTH_FAIL)
-                    .build(), HttpStatus.OK);
             return new ResponseEntity(DefaultResponse.of(StatusCode.UNAUTHORIZED,Message.AUTH_FAIL), HttpStatus.OK);
         }
         return pjp.proceed(pjp.getArgs());
