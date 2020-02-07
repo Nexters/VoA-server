@@ -4,10 +4,11 @@ import com.voa.goodbam.domain.login.DefaultResponse;
 import com.voa.goodbam.domain.login.Message;
 import com.voa.goodbam.domain.login.StatusCode;
 import com.voa.goodbam.domain.room.Room;
+import com.voa.goodbam.domain.room.RoomResponse;
+import com.voa.goodbam.domain.room.RoomService;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import com.voa.goodbam.repository.RoomRepository;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
-import com.voa.goodbam.domain.room.RoomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,8 @@ public class RoomController {
     private RoomRepository roomRepository;
     @Autowired
     private UserStatusInRoomRepository userStatusInRoomRepository;
+    @Autowired
+    private RoomService roomService;
     @PostMapping("/new")
     public ResponseEntity room(@RequestParam String roomName, @RequestParam Long userId) {
         Room newRoom = roomRepository.save(Room.create(roomName));
@@ -59,5 +62,10 @@ public class RoomController {
             roomDatas.add(RoomResponse.builder().roomId(room.getId()).roomTitle(room.getName()).build());
         }
         return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK,roomDatas) , HttpStatus.OK);
+    }
+
+    @GetMapping("/{roomId}")
+    public ResponseEntity getRoomInfoByRoomId(@PathVariable Long roomId) {
+        return new ResponseEntity(roomService.getRoomInfoByRoomId(roomId), HttpStatus.OK);
     }
 }
