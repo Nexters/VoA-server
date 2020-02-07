@@ -4,15 +4,20 @@ import com.voa.goodbam.domain.roomStatus.HomeComingStatus;
 import com.voa.goodbam.domain.roomStatus.InvitationStatus;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/status")
 public class StatusController {
 
-    @Autowired
-    private UserStatusInRoomRepository userStatusInRoomRepository;
+    private final UserStatusInRoomRepository userStatusInRoomRepository;
+
+    public StatusController(UserStatusInRoomRepository userStatusInRoomRepository) {
+        this.userStatusInRoomRepository = userStatusInRoomRepository;
+    }
 
     @PutMapping("/homecoming")
     public UserStatusInRoom updateHomeComingStatus(@RequestParam HomeComingStatus homeComingStatus,
@@ -32,5 +37,4 @@ public class StatusController {
         userStatusInRoom.setInvitationStatus(invitationStatus);
         return userStatusInRoomRepository.save(userStatusInRoom);
     }
-
 }
