@@ -2,32 +2,34 @@ package com.voa.goodbam.controller;
 
 import com.voa.goodbam.domain.roomStatus.HomeComingStatus;
 import com.voa.goodbam.domain.roomStatus.InvitationStatus;
-import com.voa.goodbam.domain.user.User;
+import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/status")
 public class StatusController {
-    @Autowired
-    UserStatusInRoomRepository userStatusInRoomRepository;
-    @PutMapping("/homecoming")
-    public User updateHomeComingStatus(@RequestParam HomeComingStatus homeComingStatus,
-                                       @RequestParam String userId,
-                                       @RequestParam String roomId) {
 
-        return null;
+    @Autowired
+    private UserStatusInRoomRepository userStatusInRoomRepository;
+
+    @PutMapping("/homecoming")
+    public UserStatusInRoom updateHomeComingStatus(@RequestParam HomeComingStatus homeComingStatus,
+                                       @RequestParam long userId,
+                                       @RequestParam long roomId) {
+
+        UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
+        userStatusInRoom.setHomeComingStatus(homeComingStatus);
+        return userStatusInRoomRepository.save(userStatusInRoom);
     }
 
     @PutMapping("/invitation")
-    public User updateInvitationStatus(@RequestParam InvitationStatus invitationStatus,
-                                       @RequestParam String userId,
-                                       @RequestParam String roomId) {
-
-        return null;
+    public UserStatusInRoom updateInvitationStatus(@RequestParam InvitationStatus invitationStatus,
+                                       @RequestParam long userId,
+                                       @RequestParam long roomId) {
+        UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
+        userStatusInRoom.setInvitationStatus(invitationStatus);
+        return userStatusInRoomRepository.save(userStatusInRoom);
     }
 }

@@ -8,13 +8,11 @@ import java.util.List;
 
 @Repository
 public interface UserStatusInRoomRepository extends CrudRepository<UserStatusInRoom, Long> {
+    List<UserStatusInRoom> findByUserId(long userId);
     List<UserStatusInRoom> findByRoomId(Long roomId);
-    /**
-     *
-     * TODO
-     * updateRoomInvitationStatus(roomId, userId, invitationstatus)
-     * updateHomeComingStatus(roomId, userId, homecomingstatus)
-     *
-     */
+
+    UserStatusInRoom findByUserIdAndRoomId(long userId, long roomId);
+
+    void deleteByUserIdAndRoomId(long userId, long roomId);
 
 }
