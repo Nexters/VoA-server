@@ -3,6 +3,8 @@ package com.voa.goodbam.domain.room;
 import com.voa.goodbam.domain.login.DefaultResponse;
 import com.voa.goodbam.domain.login.Message;
 import com.voa.goodbam.domain.login.StatusCode;
+import com.voa.goodbam.domain.room.response.RoomInfoResponse;
+import com.voa.goodbam.domain.room.response.UserInfoResponse;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import com.voa.goodbam.domain.user.User;
 import com.voa.goodbam.repository.RoomRepository;
@@ -34,7 +36,7 @@ public class RoomService {
             participants.add(UserInfoResponse.builder()
                     .userID(user.getId())
                     .userName(user.getName())
-                    .userStatus(userInfo.getHomeComingStatus().name())
+                    .userStatus(userInfo.getHomeComingStatus().getMessage())
                     .userProfileURL(user.getProfileImage())
                     //TODO: Messaging구현 후 수정 필요
                     //isMessage -> true(응답하기 버튼 노출), false(찔러보기 노출),
