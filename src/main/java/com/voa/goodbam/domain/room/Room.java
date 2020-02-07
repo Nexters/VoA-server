@@ -1,7 +1,11 @@
 package com.voa.goodbam.domain.room;
 
+import com.voa.goodbam.domain.messenger.Messenger;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,6 +26,9 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private List<UserStatusInRoom> users;
+
+    @OneToMany(mappedBy = "room")
+    private List<Messenger> messages;
 
     public static Room create(String name) {
         return Room.builder().name(name).code(generateUniqueCode()).build();
