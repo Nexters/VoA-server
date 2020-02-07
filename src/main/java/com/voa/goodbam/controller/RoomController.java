@@ -5,10 +5,11 @@ import com.voa.goodbam.repository.RoomRepository;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/room")
@@ -16,34 +17,37 @@ public class RoomController {
 
     @Autowired
     private RoomRepository roomRepository;
+
     @Autowired
     private UserStatusInRoomRepository userStatusInRoomRepository;
+
     @PostMapping("/new")
-    public ResponseEntity room(@RequestParam String roomName, @RequestParam long userId) {
+    public Room room(@RequestParam String roomName, @RequestParam long userId) {
         Room newRoom = roomRepository.save(Room.create(roomName));
-        try{
-            userStatusInRoomRepository.save(UserStatusInRoom.create(newRoom, userId));
-        }catch (Exception exception){
-            roomRepository.delete(newRoom);
+        userStatusInRoomRepository.save(UserStatusInRoom.create(newRoom, userId));
+        return newRoom;
+    }
+
+    @PutMapping("/user")
+    public Room joinRoom(@RequestParam long roomId, @RequestParam long userId) {
+        Optional<Room> room = roomRepository.findById(roomId);
+        if (room.isPresent()) {
+            userStatusInRoomRepository.save(UserStatusInRoom.create(room.get(), userId));
+            return room.get();
         }
         return null;
     }
 
-    @PutMapping("/user")
-    public ResponseEntity joinRoom(@RequestParam long roomId, @RequestParam String kakaoId) {
-
-        return null;
-    }
-
     @DeleteMapping("/user")
-    public ResponseEntity leaveRoom(@RequestParam long roomId, @RequestParam String userId) {
-
-        return null;
+    public boolean leaveRoom(@RequestParam long roomId, @RequestParam long userId) {
+        userStatusInRoomRepository.deleteByUserIdAndRoomId(userId, roomId);
+        return true;
     }
 
-    @GetMapping("/get/{userId}")
+    @GetMapping(value="/get/{userId}")
     public List<Room> getRoomsByUserId(@PathVariable Long userId) {
-        return null;
+        List<Room> roomAndUsers = userStatusInRoomRepository.findByUserId(userId).stream().map(UserStatusInRoom::getRoom).collect(Collectors.toList());
+        return roomAndUsers;
     }
 
 }

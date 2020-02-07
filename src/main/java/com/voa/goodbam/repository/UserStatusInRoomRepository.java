@@ -1,18 +1,19 @@
 package com.voa.goodbam.repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserStatusInRoomRepository extends CrudRepository<UserStatusInRoom, Long> {
 
-    /**
-     *
-     * TODO
-     * updateRoomInvitationStatus(roomId, userId, invitationstatus)
-     * updateHomeComingStatus(roomId, userId, homecomingstatus)
-     *
-     */
+    List<UserStatusInRoom> findByUserId(long userId);
+
+    UserStatusInRoom findByUserIdAndRoomId(long userId, long roomId);
+
+    void deleteByUserIdAndRoomId(long userId, long roomId);
 
 }

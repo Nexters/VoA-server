@@ -1,5 +1,6 @@
 package com.voa.goodbam.domain.roomStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.voa.goodbam.domain.room.Room;
 import com.voa.goodbam.domain.user.User;
 import lombok.*;
@@ -12,6 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "UserStatus")
 @Builder
+@Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","room", "user"})
 public class UserStatusInRoom {
 
     @Id
@@ -25,19 +28,22 @@ public class UserStatusInRoom {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     @Enumerated(EnumType.STRING)
-    private HomeComingStatus userState;
+    private HomeComingStatus homeComingStatus;
+
     @Enumerated(EnumType.STRING)
     private InvitationStatus invitationStatus;
-    private LocalDateTime startTime;
-    private LocalDateTime arrivalTime;
+
+    private LocalDateTime startedAt;
+    private LocalDateTime arrivedAt;
+
     public static UserStatusInRoom create(Room room, long userId) {
         return UserStatusInRoom.builder()
                 .room(room)
                 .user(User.builder().id(userId).build())
-                .userState(HomeComingStatus.NOT_INITIATED)
+                .homeComingStatus(HomeComingStatus.NOT_INITIATED)
                 .invitationStatus(InvitationStatus.ACCEPTED)
                 .build();
-//        return new User(1, "id", "sang", null, false, "push");
     }
 }
