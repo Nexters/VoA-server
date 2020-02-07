@@ -1,10 +1,11 @@
 package com.voa.goodbam.room.api;
 
 import com.voa.goodbam.room.domain.Room;
-import com.voa.goodbam.status.domain.UserStatusInRoom;
 import com.voa.goodbam.room.domain.RoomRepository;
+import com.voa.goodbam.status.domain.UserStatusInRoom;
 import com.voa.goodbam.status.domain.UserStatusInRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class RoomController {
     @Autowired
     private UserStatusInRoomRepository userStatusInRoomRepository;
     @PostMapping("/new")
-    public Room room(@RequestParam String roomName, @RequestParam long userId) {
+    public ResponseEntity room(@RequestParam String roomName, @RequestParam long userId) {
         Room newRoom = roomRepository.save(Room.create(roomName));
         try{
             userStatusInRoomRepository.save(UserStatusInRoom.create(newRoom, userId));
@@ -29,13 +30,13 @@ public class RoomController {
     }
 
     @PutMapping("/user")
-    public Room joinRoom(@RequestParam long roomId, @RequestParam String kakaoId) {
+    public ResponseEntity joinRoom(@RequestParam long roomId, @RequestParam String kakaoId) {
 
         return null;
     }
 
     @DeleteMapping("/user")
-    public Room leaveRoom(@RequestParam long roomId, @RequestParam String userId) {
+    public ResponseEntity leaveRoom(@RequestParam long roomId, @RequestParam String userId) {
 
         return null;
     }

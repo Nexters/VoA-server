@@ -2,10 +2,11 @@ package com.voa.goodbam.common.response;
 
 import lombok.*;
 
-@Builder
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class DefaultResponse<T> {
     private StatusCode statusCode;
     private Message message;

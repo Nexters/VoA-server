@@ -26,17 +26,5 @@ public class User {
     private String pushCode;
     private int uuid;
     private String os;
-
-
-    public static User create(User user) {
-        return User.builder()
-                .kakaoId(user.getKakaoId())
-                .name(user.getName())
-                .isAppUser(user.isAppUser())
-                .pushCode(user.getPushCode())
-                .os(user.getOs())
-                .uuid(user.getUuid()).build();
-//        return new User(1, "id", "sang", null, false, "push");
-    }
-
+    private String profileImage;
 }
