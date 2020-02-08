@@ -75,7 +75,7 @@ public class RoomController {
     }
 
     @GetMapping("/{roomId}")
-    public ResponseEntity getRoomInfoByRoomId(@PathVariable Long roomId) {
-        return new ResponseEntity(roomService.getRoomInfoByRoomId(roomId), HttpStatus.OK);
+    public ResponseEntity getRoomInfoByRoomId(@PathVariable Long roomId, @RequestParam Long userId) {
+        return new ResponseEntity(roomService.getRoomInfoByRoomId(roomId, userId), HttpStatus.OK);
     }
 }

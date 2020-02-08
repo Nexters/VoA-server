@@ -31,7 +31,7 @@ public class User {
     private String os;
     private String profileImage;
     @OneToMany(mappedBy = "sender")
-    private List<Messenger> senderMessages;
+    private List<Messenger> sendMessages;
     @OneToMany(mappedBy = "target")
-    private List<Messenger> targetMessages;
+    private List<Messenger> receivedMessages;
 }
