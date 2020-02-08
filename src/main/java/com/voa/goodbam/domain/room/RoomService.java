@@ -36,7 +36,7 @@ public class RoomService {
             participants.add(UserInfoResponse.builder()
                     .userID(user.getId())
                     .userName(user.getName())
-                    .userStatus(userInfo.getHomeComingStatus().getMessage())
+                    .userStatus(userInfo.getHomeComingStatus().name())
                     .userProfileURL(user.getProfileImage())
                     //TODO: Messaging구현 후 수정 필요
                     //isMessage -> true(응답하기 버튼 노출), false(찔러보기 노출),

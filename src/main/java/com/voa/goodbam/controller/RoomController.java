@@ -14,9 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -71,7 +69,9 @@ public class RoomController {
         for(Room room:roomAndUsers){
             response.add(RoomResponse.builder().roomId(room.getId()).roomTitle(room.getName()).build());
         }
-        return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK, response), HttpStatus.OK);
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("roomDatas", response);
+        return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK, responseMap), HttpStatus.OK);
     }
 
     @GetMapping("/{roomId}")
