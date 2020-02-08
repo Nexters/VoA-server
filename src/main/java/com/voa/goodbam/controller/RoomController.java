@@ -47,9 +47,9 @@ public class RoomController {
         Optional<Room> room = roomRepository.findById(roomId);
         if (room.isPresent()) {
             userStatusInRoomRepository.save(UserStatusInRoom.create(room.get(), userId));
-            return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK, JoinResponse.builder().isSuccess(true).roomID(room.get().getId()).build()), HttpStatus.OK);
+            return new ResponseEntity(DefaultResponse.of(StatusCode.ROOM_JOIN_SUCCESS, Message.ROOM_JOIN_SUCCESS, JoinResponse.builder().isSuccess(true).roomID(room.get().getId()).build()), HttpStatus.OK);
         }
-        return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK, JoinResponse.builder().isSuccess(false).build()), HttpStatus.OK);
+        return new ResponseEntity(DefaultResponse.of(StatusCode.ROOM_DESTROYED, Message.ROOM_DESTROYED, JoinResponse.builder().isSuccess(false).build()), HttpStatus.OK);
     }
 
     @DeleteMapping("/user")
