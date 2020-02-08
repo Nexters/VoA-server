@@ -4,7 +4,7 @@ import com.voa.goodbam.domain.login.DefaultResponse;
 import com.voa.goodbam.domain.login.Message;
 import com.voa.goodbam.domain.login.StatusCode;
 import com.voa.goodbam.domain.messenger.Messenger;
-import com.voa.goodbam.domain.messenger.MessengerRepository;
+import com.voa.goodbam.repository.MessengerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

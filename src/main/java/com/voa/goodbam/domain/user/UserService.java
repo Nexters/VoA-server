@@ -1,14 +1,10 @@
 package com.voa.goodbam.domain.user;
 
-import com.voa.goodbam.domain.login.DefaultResponse;
-import com.voa.goodbam.domain.login.Message;
-import com.voa.goodbam.domain.login.StatusCode;
+import com.voa.goodbam.domain.login.*;
 import com.voa.goodbam.support.authentication.AuthService;
 import com.voa.goodbam.support.authentication.JwtService;
 import com.voa.goodbam.support.authentication.JwtToken;
 import com.voa.goodbam.repository.UserRepository;
-import com.voa.goodbam.domain.login.LoginRequest;
-import com.voa.goodbam.domain.login.LoginResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,11 +26,15 @@ public class UserService {
         }
         String kakaoId = kakaoUser.getKakaoId();
         String profileImage = kakaoUser.getProfileImage();
+        boolean isAppUser = true;
+        if(platform.equals("Web")){
+            isAppUser = false;
+        }
         Optional<User> optionalUser = userRepository.findUserByKakaoId(kakaoId);
         if(!optionalUser.isPresent()){
             User newUser = User.builder()
                     .kakaoId(kakaoId)
-                    .isAppUser(loginRequest.isAppUser())
+                    .isAppUser(isAppUser)
                     .name(loginRequest.getUserName())
                     .os(platform)
                     .profileImage(profileImage).build();

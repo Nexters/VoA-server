@@ -11,7 +11,10 @@ public enum Message {
     AUTH_SUCCESS("인증 성공"),
     LOGIN_SUCCESS("로그인 성공"),
     LOGIN_FAIL("로그인 실패"),
-    NO_CONTENT("데이터 없음");
+    NO_CONTENT("데이터 없음"),
+
+    ROOM_JOIN_SUCCESS("방 참여 성공"),
+    ROOM_DESTROYED("삭제된 방 참여 실패");
 
     private final String message;
 

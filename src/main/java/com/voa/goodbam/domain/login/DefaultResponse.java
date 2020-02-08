@@ -8,12 +8,12 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DefaultResponse<T> {
-    private int statusCode;
+    private int status;
     private String message;
     private T data;
 
-    public DefaultResponse(final int statusCode, final String message) {
-        this.statusCode = statusCode;
+    public DefaultResponse(final int status, final String message) {
+        this.status = status;
         this.message = message;
         this.data = null;
     }
@@ -32,7 +32,7 @@ public class DefaultResponse<T> {
 
     public static <T> DefaultResponse<T> of(final int code, final String message, final T data) {
         return DefaultResponse.<T>builder()
-                .statusCode(code)
+                .status(code)
                 .message(message)
                 .data(data)
                 .build();

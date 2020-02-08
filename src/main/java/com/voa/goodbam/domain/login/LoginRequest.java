@@ -9,5 +9,4 @@ import lombok.*;
 public class LoginRequest {
     String kakaoToken;
     String userName;
-    boolean isAppUser;
 }

@@ -14,9 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -49,9 +47,9 @@ public class RoomController {
         Optional<Room> room = roomRepository.findById(roomId);
         if (room.isPresent()) {
             userStatusInRoomRepository.save(UserStatusInRoom.create(room.get(), userId));
-            return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK, JoinResponse.builder().isSuccess(true).roomID(room.get().getId()).build()), HttpStatus.OK);
+            return new ResponseEntity(DefaultResponse.of(StatusCode.ROOM_JOIN_SUCCESS, Message.ROOM_JOIN_SUCCESS, JoinResponse.builder().isSuccess(true).roomID(room.get().getId()).build()), HttpStatus.OK);
         }
-        return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK, JoinResponse.builder().isSuccess(false).build()), HttpStatus.OK);
+        return new ResponseEntity(DefaultResponse.of(StatusCode.ROOM_DESTROYED, Message.ROOM_DESTROYED, JoinResponse.builder().isSuccess(false).build()), HttpStatus.OK);
     }
 
     @DeleteMapping("/user")
@@ -71,11 +69,13 @@ public class RoomController {
         for(Room room:roomAndUsers){
             response.add(RoomResponse.builder().roomId(room.getId()).roomTitle(room.getName()).build());
         }
-        return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK, response), HttpStatus.OK);
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("roomDatas", response);
+        return new ResponseEntity(DefaultResponse.of(StatusCode.OK, Message.OK, responseMap), HttpStatus.OK);
     }
 
     @GetMapping("/{roomId}")
-    public ResponseEntity getRoomInfoByRoomId(@PathVariable Long roomId) {
-        return new ResponseEntity(roomService.getRoomInfoByRoomId(roomId), HttpStatus.OK);
+    public ResponseEntity getRoomInfoByRoomId(@PathVariable Long roomId, @RequestParam Long userId) {
+        return new ResponseEntity(roomService.getRoomInfoByRoomId(roomId, userId), HttpStatus.OK);
     }
 }
