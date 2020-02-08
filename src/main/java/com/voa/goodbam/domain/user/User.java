@@ -34,4 +34,13 @@ public class User {
     private List<Messenger> sendMessages;
     @OneToMany(mappedBy = "target")
     private List<Messenger> receivedMessages;
+
+    private class NotificationTask implements Runnable {
+        @Override
+        public void run() {
+
+
+        }
+    }
+
 }

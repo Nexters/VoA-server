@@ -3,11 +3,15 @@ package com.voa.goodbam.controller;
 import com.voa.goodbam.domain.roomStatus.HomeComingStatus;
 import com.voa.goodbam.domain.roomStatus.InvitationStatus;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
+import com.voa.goodbam.domain.scheduler.GoodBamScheduler;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/status")
@@ -21,11 +25,15 @@ public class StatusController {
 
     @PutMapping("/homecoming")
     public UserStatusInRoom updateHomeComingStatus(@RequestParam HomeComingStatus homeComingStatus,
-                                       @RequestParam long userId,
-                                       @RequestParam long roomId) {
+                                                   @RequestParam long userId,
+                                                   @RequestParam long roomId,
+                                                   @RequestParam Optional<LocalDateTime> time) {
 
         UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
         userStatusInRoom.setHomeComingStatus(homeComingStatus);
+        if (time.isPresent()) {
+            GoodBamScheduler.schedule(homeComingStatus, userId, time.get());
+        }
         return userStatusInRoomRepository.save(userStatusInRoom);
     }
 
