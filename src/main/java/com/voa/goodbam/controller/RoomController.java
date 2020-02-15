@@ -13,7 +13,6 @@ import com.voa.goodbam.repository.RoomRepository;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,7 +89,7 @@ public class RoomController {
     }
 
     @GetMapping("/{roomId}")
-    public ResponseEntity getRoomInfoByRoomId(@PathVariable Long roomId, @PathVariable Long userId) {
+    public ResponseEntity getRoomInfoByRoomId(@PathVariable Long roomId, @RequestParam Long userId) {
         return new ResponseEntity(roomService.getRoomInfoByRoomId(roomId, userId), HttpStatus.OK);
     }
 
