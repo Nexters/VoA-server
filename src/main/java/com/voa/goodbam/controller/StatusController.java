@@ -26,13 +26,14 @@ public class StatusController {
     @PutMapping("/homecoming")
     public UserStatusInRoom updateHomeComingStatus(@RequestParam HomeComingStatus homeComingStatus,
                                                    @RequestParam long userId,
-                                                   @RequestParam long roomId,
-                                                   @RequestParam Optional<LocalDateTime> time) {
+                                                   @RequestParam long roomId) {
 
         UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
         userStatusInRoom.setHomeComingStatus(homeComingStatus);
-        if (time.isPresent()) {
-            GoodBamScheduler.schedule(homeComingStatus, userId, time.get());
+        if (homeComingStatus.equals(HomeComingStatus.ON_THE_WAY_HOME)) {
+            userStatusInRoom.setStartedAt(LocalDateTime.now());
+        } else if (homeComingStatus.equals(HomeComingStatus.ARRIVED_HOME)) {
+            userStatusInRoom.setArrivedAt(LocalDateTime.now());
         }
         return userStatusInRoomRepository.save(userStatusInRoom);
     }
@@ -43,6 +44,19 @@ public class StatusController {
                                        @RequestParam long roomId) {
         UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
         userStatusInRoom.setInvitationStatus(invitationStatus);
+        return userStatusInRoomRepository.save(userStatusInRoom);
+    }
+
+    @PutMapping("/time/remain")
+    public UserStatusInRoom updateRemainingTime(@RequestParam int timeRemaining,
+                                                   @RequestParam long userId,
+                                                   @RequestParam long roomId) {
+        UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
+//        userStatusInRoom.
+
+        if (time.isPresent()) {
+            GoodBamScheduler.schedule(homeComingStatus, userId, time.get());
+        }
         return userStatusInRoomRepository.save(userStatusInRoom);
     }
 }

@@ -2,6 +2,8 @@ package com.voa.goodbam.domain.roomStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.voa.goodbam.domain.room.Room;
+import com.voa.goodbam.domain.scheduler.ConfirmationType;
+import com.voa.goodbam.domain.scheduler.GoodBamScheduler;
 import com.voa.goodbam.domain.user.User;
 import lombok.*;
 
@@ -39,6 +41,8 @@ public class UserStatusInRoom {
 
     private LocalDateTime startedAt;
     private LocalDateTime arrivedAt;
+    private LocalDateTime expectedToArriveAt;
+    private ConfirmationType confirmationType;
 
     public static UserStatusInRoom create(Room room, long userId) {
         return UserStatusInRoom.builder()
@@ -48,4 +52,16 @@ public class UserStatusInRoom {
                 .invitationStatus(InvitationStatus.ACCEPTED)
                 .build();
     }
+
+    public Runnable getTask() {
+        return new NotificationTask();
+    }
+
+    private class NotificationTask implements Runnable {
+        @Override
+        public void run() {
+            new GoodBamScheduler().schedule(user.getId(), room.getId(), confirmationType);
+        }
+    }
+
 }
