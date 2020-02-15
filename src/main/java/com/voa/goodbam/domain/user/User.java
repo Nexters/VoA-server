@@ -2,6 +2,7 @@ package com.voa.goodbam.domain.user;
 
 import com.voa.goodbam.domain.messenger.Messenger;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
+import com.voa.goodbam.support.pushnotification.IOSPush;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class User {
     private List<UserStatusInRoom> rooms;
     private boolean isAppUser;
     private String kakaoAccessToken;
+    private String fcmRegisterationToken;
     private String uuid;
     private String os;
     private String profileImage;
@@ -32,5 +34,13 @@ public class User {
     private List<Messenger> sendMessages;
     @OneToMany(mappedBy = "target")
     private List<Messenger> receivedMessages;
+
+    public void sendNotification(String title, String body) {
+
+        if (!fcmRegisterationToken.isEmpty()) {
+            IOSPush.sendNotification(fcmRegisterationToken, title, body);
+        }
+
+    }
 
 }
