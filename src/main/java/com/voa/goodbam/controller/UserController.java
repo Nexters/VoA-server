@@ -19,6 +19,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity login(LoginRequest loginRequest, @RequestHeader("Platform") String platform) {
+        System.out.println(loginRequest.toString());
         return new ResponseEntity(userService.login(loginRequest, platform), HttpStatus.OK);
     }
 }
