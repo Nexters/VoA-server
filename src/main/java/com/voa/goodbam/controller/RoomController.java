@@ -10,7 +10,9 @@ import com.voa.goodbam.domain.room.response.RoomResponse;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import com.voa.goodbam.domain.scheduler.GoodBamNotifier;
 import com.voa.goodbam.repository.RoomRepository;
+import com.voa.goodbam.repository.UserRepository;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ public class RoomController {
 
     private final RoomRepository roomRepository;
     private final UserStatusInRoomRepository userStatusInRoomRepository;
+
+    @Autowired
+    private UserRepository userRepository;
     private final RoomService roomService;
 
     @Value("${invite.joined.to.frinds}")
@@ -56,8 +61,8 @@ public class RoomController {
         Optional<Room> room = roomRepository.findById(roomId);
         if (room.isPresent()) {
             userStatusInRoomRepository.save(UserStatusInRoom.create(room.get(), userId));
-
-            GoodBamNotifier.sendNotificationToFriends(roomId, userId, joinMessageToFriend);
+            String userName = userRepository.findById(userId).get().getName();
+            GoodBamNotifier.sendNotificationToFriends(roomId, userId, joinMessageToFriend.replace("{name}", userName));
 
             return new ResponseEntity(DefaultResponse.of(StatusCode.ROOM_JOIN_SUCCESS, Message.ROOM_JOIN_SUCCESS, JoinResponse.builder().isSuccess(true).roomID(room.get().getId()).build()), HttpStatus.OK);
         }

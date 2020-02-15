@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
@@ -65,13 +66,13 @@ public class GoodBamNotifier {
                         map(UserStatusInRoom::getUser).
                         filter(user -> user.getId() != userId).
                         map(User::getFcmRegisterationToken).
-                        filter(token -> !token.isEmpty()).collect(Collectors.toList());
+                        filter(token -> !Objects.isNull(token)).collect(Collectors.toList());
         return registrationTokens;
     }
 
     public static void sendNotificationToMe(long userId, String message) {
         String fcmToken = userRepository.findById(userId).get().getFcmRegisterationToken();
-        if (!fcmToken.isEmpty()) {
+        if (!Objects.isNull(fcmToken)) {
             IOSPush.sendNotification(fcmToken, message);
         }
     }

@@ -4,6 +4,7 @@ import com.voa.goodbam.domain.roomStatus.HomeComingStatus;
 import com.voa.goodbam.domain.roomStatus.InvitationStatus;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import com.voa.goodbam.domain.scheduler.GoodBamNotifier;
+import com.voa.goodbam.repository.UserRepository;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
 import com.voa.goodbam.support.ScheduleTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/status")
 public class StatusController {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserStatusInRoomRepository userStatusInRoomRepository;
@@ -38,12 +42,15 @@ public class StatusController {
 
         UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
         userStatusInRoom.setHomeComingStatus(homeComingStatus);
+
+        String userName = userRepository.findById(userId).get().getName();
+
         if (homeComingStatus.equals(HomeComingStatus.ON_THE_WAY_HOME)) {
             userStatusInRoom.setStartedAt(LocalDateTime.now());
-            GoodBamNotifier.sendNotificationToFriends(roomId, userId, homeComingMessage);
+            GoodBamNotifier.sendNotificationToFriends(roomId, userId, homeComingMessage.replace("{name}", userName));
         } else if (homeComingStatus.equals(HomeComingStatus.ARRIVED_HOME)) {
             userStatusInRoom.setArrivedAt(LocalDateTime.now());
-            GoodBamNotifier.sendNotificationToFriends(roomId, userId, arrivedMessage);
+            GoodBamNotifier.sendNotificationToFriends(roomId, userId, arrivedMessage.replace("{name}", userName);
             /**
              * 모두 도착했을 시 메시지 만들기
              */
