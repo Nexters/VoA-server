@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface UserStatusInRoomRepository extends CrudRepository<UserStatusInRoom, Long> {
     List<UserStatusInRoom> findByUserId(long userId);
-    List<UserStatusInRoom> findByRoomId(Long roomId);
+    List<UserStatusInRoom> findByRoomId(long roomId);
 
     UserStatusInRoom findByUserIdAndRoomId(long userId, long roomId);
 

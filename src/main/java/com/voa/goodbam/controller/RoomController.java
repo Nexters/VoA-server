@@ -33,6 +33,9 @@ public class RoomController {
     private UserRepository userRepository;
     private final RoomService roomService;
 
+    @Autowired
+    private GoodBamNotifier goodBamNotifier;
+
     @Value("${invite.joined.to.frinds}")
     private String joinMessageToFriend;
 
@@ -63,7 +66,7 @@ public class RoomController {
         if (room.isPresent()) {
             userStatusInRoomRepository.save(UserStatusInRoom.create(room.get(), userId));
             String userName = userRepository.findById(userId).get().getName();
-            GoodBamNotifier.sendNotificationToFriends(roomId, userId, joinMessageToFriend.replace("{name}", userName));
+            goodBamNotifier.sendNotificationToFriends(roomId, userId, joinMessageToFriend.replace("{name}", userName));
 
             return new ResponseEntity(DefaultResponse.of(StatusCode.ROOM_JOIN_SUCCESS, Message.ROOM_JOIN_SUCCESS, JoinResponse.builder().isSuccess(true).roomID(room.get().getId()).build()), HttpStatus.OK);
         }

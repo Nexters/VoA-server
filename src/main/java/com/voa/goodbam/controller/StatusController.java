@@ -25,6 +25,9 @@ public class StatusController {
     @Autowired
     private UserStatusInRoomRepository userStatusInRoomRepository;
 
+    @Autowired
+    private GoodBamNotifier goodBamNotifier;
+
     @Value("${status.homecoming.message.to.friends}")
     private String homeComingMessage;
 
@@ -48,10 +51,10 @@ public class StatusController {
 
         if (homeComingStatus.equals(HomeComingStatus.ON_THE_WAY_HOME)) {
             userStatusInRoom.setStartedAt(LocalDateTime.now());
-            GoodBamNotifier.sendNotificationToFriends(roomId, userId, homeComingMessage.replace("{name}", userName));
+            goodBamNotifier.sendNotificationToFriends(roomId, userId, homeComingMessage.replace("{name}", userName));
         } else if (homeComingStatus.equals(HomeComingStatus.ARRIVED_HOME)) {
             userStatusInRoom.setArrivedAt(LocalDateTime.now());
-            GoodBamNotifier.sendNotificationToFriends(roomId, userId, arrivedMessage.replace("{name}", userName));
+            goodBamNotifier.sendNotificationToFriends(roomId, userId, arrivedMessage.replace("{name}", userName));
             /**
              * 모두 도착했을 시 메시지 만들기
              */

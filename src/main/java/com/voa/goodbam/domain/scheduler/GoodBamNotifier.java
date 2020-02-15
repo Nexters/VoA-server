@@ -1,5 +1,7 @@
 package com.voa.goodbam.domain.scheduler;
 
+import com.voa.goodbam.SpringContext;
+import com.voa.goodbam.domain.room.Room;
 import com.voa.goodbam.domain.roomStatus.HomeComingStatus;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
 import com.voa.goodbam.domain.user.User;
@@ -10,17 +12,20 @@ import com.voa.goodbam.support.pushnotification.IOSPush;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Component
 @NoArgsConstructor
 public class GoodBamNotifier {
 
     @Autowired
-    private static UserStatusInRoomRepository userStatusInRoomRepository;
+    private UserStatusInRoomRepository userStatusInRoomRepository;
 
     @Autowired
     private static UserRepository userRepository;
@@ -60,7 +65,7 @@ public class GoodBamNotifier {
         userStatusInRoomRepository.save(userStatusInRoom);
     }
 
-    private static List<String> getFriendsRegistrationTokens(long roomId, long userId) {
+    private List<String> getFriendsRegistrationTokens(long roomId, long userId) {
         List<String> registrationTokens =
                 userStatusInRoomRepository.findByRoomId(roomId).stream().
                         map(UserStatusInRoom::getUser).
@@ -70,15 +75,15 @@ public class GoodBamNotifier {
         return registrationTokens;
     }
 
-    public static void sendNotificationToMe(long userId, String message) {
+    public void sendNotificationToMe(long userId, String message) {
         String fcmToken = userRepository.findById(userId).get().getFcmRegisterationToken();
         if (!Objects.isNull(fcmToken)) {
             IOSPush.sendNotification(fcmToken, message);
         }
     }
 
-    public static void sendNotificationToFriends(long roomId, long userId, String message) {
-        List<String> registrationTokens = GoodBamNotifier.getFriendsRegistrationTokens(roomId, userId);
+    public void sendNotificationToFriends(long roomId, long userId, String message) {
+        List<String> registrationTokens = getFriendsRegistrationTokens(roomId, userId);
         IOSPush.sendNotifications(registrationTokens, message);
         //kakao push
     }
