@@ -69,7 +69,7 @@ public class GoodBamNotifier {
         List<String> registrationTokens =
                 userStatusInRoomRepository.findByRoomId(roomId).stream().
                         map(UserStatusInRoom::getUser).
-                        filter(user -> user.getId() != userId).
+//                        filter(user -> user.getId() != userId).
                         map(User::getFcmRegisterationToken).
                         filter(token -> !Objects.isNull(token)).collect(Collectors.toList());
         return registrationTokens;
@@ -84,7 +84,9 @@ public class GoodBamNotifier {
 
     public void sendNotificationToFriends(long roomId, long userId, String message) {
         List<String> registrationTokens = getFriendsRegistrationTokens(roomId, userId);
-        IOSPush.sendNotifications(registrationTokens, message);
+        if (registrationTokens.size() > 0) {
+            IOSPush.sendNotifications(registrationTokens, message);
+        }
         //kakao push
     }
 
