@@ -2,10 +2,7 @@ package com.voa.goodbam.domain.user;
 
 import com.voa.goodbam.domain.messenger.Messenger;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +24,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserStatusInRoom> rooms;
     private boolean isAppUser;
-    private String pushCode;
-    private int uuid;
+    private String kakaoAccessToken;
+    private String uuid;
     private String os;
     private String profileImage;
     @OneToMany(mappedBy = "sender")

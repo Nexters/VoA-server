@@ -37,8 +37,17 @@ public class UserService {
                     .isAppUser(isAppUser)
                     .name(loginRequest.getUserName())
                     .os(platform)
-                    .profileImage(profileImage).build();
+                    .profileImage(profileImage)
+                    .kakaoAccessToken(loginRequest.getKakaoToken()).build();
             optionalUser = Optional.of(userRepository.save(newUser));
+        }else{
+            User user = optionalUser.get();
+            //update accessToken
+            if(user.getKakaoAccessToken()==null
+                    || !user.getKakaoAccessToken().equals(loginRequest.getKakaoToken())){
+                user.setKakaoAccessToken(loginRequest.getKakaoToken());
+                userRepository.save(user);
+            }
         }
 
         User user = optionalUser.get();
