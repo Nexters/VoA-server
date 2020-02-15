@@ -13,6 +13,7 @@ import com.voa.goodbam.repository.RoomRepository;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +37,8 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @PostMapping("/new")
-    public ResponseEntity room(@RequestBody String roomName, @RequestBody Long userId) {
+    @PostMapping(value="/new")
+    public ResponseEntity room(@RequestParam String roomName, @RequestParam Long userId) {
         try {
             Room newRoom = roomRepository.save(Room.create(roomName));
             userStatusInRoomRepository.save(UserStatusInRoom.create(newRoom, userId));
@@ -48,7 +49,7 @@ public class RoomController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity joinRoom(@RequestBody Long roomId, @RequestBody Long userId) {
+    public ResponseEntity joinRoom(@RequestParam Long roomId, @RequestParam Long userId) {
         Optional<Room> room = roomRepository.findById(roomId);
         if (room.isPresent()) {
             userStatusInRoomRepository.save(UserStatusInRoom.create(room.get(), userId));
@@ -61,7 +62,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity leaveRoom(@RequestBody Long roomId, @RequestBody Long userId) {
+    public ResponseEntity leaveRoom(@RequestParam Long roomId, @RequestParam Long userId) {
         try {
             userStatusInRoomRepository.deleteByUserIdAndRoomId(userId, roomId);
         }catch(Exception exception){
