@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -38,9 +37,10 @@ public class IOSPush {
 
     }
 
-    public static void sendNotifications(List<String> registrationTokens, String title, String body) {
+    public static void sendNotifications(List<String> registrationTokens, String body) {
         MulticastMessage message = MulticastMessage.builder()
                 .addAllTokens(registrationTokens)
+                .setNotification(Notification.builder().setBody(body).build())
                 .build();
         try {
             BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
@@ -50,11 +50,11 @@ public class IOSPush {
         }
     }
 
-    public static void sendNotification(String registrationToken, String title, String body) {
+    public static void sendNotification(String registrationToken, String body) {
 //        String registrationToken = "dPcYNcKyW09mmTfmeuQD9p:APA91bGp5icdr4i17RT8qX8Fp-9tQnMSTqAKMG7_MBodvMaTOnkRnAW7dVOWXQDpqdfncrvuGanwXvFR_jvA1AYGxymu7Lbne3fKFg2w3GoOmoL1DzMFQQEhO5lpk0XbXJtozIsAFRu7";
         Message message = Message.builder()
                 .setToken(registrationToken)
-                .setNotification(Notification.builder().setBody(body).setTitle(title).build())
+                .setNotification(Notification.builder().setBody(body).build())
                 .build();
         try {
             String response = FirebaseMessaging.getInstance().send(message);
