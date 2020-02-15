@@ -8,8 +8,10 @@ import com.voa.goodbam.domain.room.RoomService;
 import com.voa.goodbam.domain.room.response.JoinResponse;
 import com.voa.goodbam.domain.room.response.RoomResponse;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
+import com.voa.goodbam.domain.scheduler.GoodBamNotifier;
 import com.voa.goodbam.repository.RoomRepository;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,9 @@ public class RoomController {
     private final UserStatusInRoomRepository userStatusInRoomRepository;
     private final RoomService roomService;
 
+    @Value("${invite.joined.to.frinds}")
+    private String joinMessageToFriend;
+
     public RoomController(RoomRepository roomRepository, UserStatusInRoomRepository userStatusInRoomRepository, RoomService roomService) {
         this.roomRepository = roomRepository;
         this.userStatusInRoomRepository = userStatusInRoomRepository;
@@ -32,7 +37,7 @@ public class RoomController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity room(@RequestParam String roomName, @RequestParam Long userId) {
+    public ResponseEntity room(@RequestBody String roomName, @RequestBody Long userId) {
         try {
             Room newRoom = roomRepository.save(Room.create(roomName));
             userStatusInRoomRepository.save(UserStatusInRoom.create(newRoom, userId));
@@ -43,17 +48,20 @@ public class RoomController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity joinRoom(@RequestParam Long roomId, @RequestParam Long userId) {
+    public ResponseEntity joinRoom(@RequestBody Long roomId, @RequestBody Long userId) {
         Optional<Room> room = roomRepository.findById(roomId);
         if (room.isPresent()) {
             userStatusInRoomRepository.save(UserStatusInRoom.create(room.get(), userId));
+
+            GoodBamNotifier.sendNotificationToFriends(roomId, userId, joinMessageToFriend);
+
             return new ResponseEntity(DefaultResponse.of(StatusCode.ROOM_JOIN_SUCCESS, Message.ROOM_JOIN_SUCCESS, JoinResponse.builder().isSuccess(true).roomID(room.get().getId()).build()), HttpStatus.OK);
         }
         return new ResponseEntity(DefaultResponse.of(StatusCode.ROOM_DESTROYED, Message.ROOM_DESTROYED, JoinResponse.builder().isSuccess(false).build()), HttpStatus.OK);
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity leaveRoom(@RequestParam Long roomId, @RequestParam Long userId) {
+    public ResponseEntity leaveRoom(@RequestBody Long roomId, @RequestBody Long userId) {
         try {
             userStatusInRoomRepository.deleteByUserIdAndRoomId(userId, roomId);
         }catch(Exception exception){
@@ -75,7 +83,8 @@ public class RoomController {
     }
 
     @GetMapping("/{roomId}")
-    public ResponseEntity getRoomInfoByRoomId(@PathVariable Long roomId, @RequestParam Long userId) {
+    public ResponseEntity getRoomInfoByRoomId(@PathVariable Long roomId, @PathVariable Long userId) {
         return new ResponseEntity(roomService.getRoomInfoByRoomId(roomId, userId), HttpStatus.OK);
     }
+
 }

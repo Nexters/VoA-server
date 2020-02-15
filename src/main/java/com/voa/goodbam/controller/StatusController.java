@@ -3,9 +3,11 @@ package com.voa.goodbam.controller;
 import com.voa.goodbam.domain.roomStatus.HomeComingStatus;
 import com.voa.goodbam.domain.roomStatus.InvitationStatus;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
-import com.voa.goodbam.domain.scheduler.GoodBamScheduler;
+import com.voa.goodbam.domain.scheduler.GoodBamNotifier;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
 import com.voa.goodbam.support.ScheduleTaskService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,11 +19,17 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/status")
 public class StatusController {
 
-    private final UserStatusInRoomRepository userStatusInRoomRepository;
+    @Autowired
+    private UserStatusInRoomRepository userStatusInRoomRepository;
 
-    public StatusController(UserStatusInRoomRepository userStatusInRoomRepository) {
-        this.userStatusInRoomRepository = userStatusInRoomRepository;
-    }
+    @Value("${status.homecoming.message.to.friends}")
+    private String homeComingMessage;
+
+    @Value("${status.arrival.message.to.friends}")
+    private String arrivedMessage;
+
+    @Value("${status.arrival.message.to.all}")
+    private String allArrivedMessage;
 
     @PutMapping("/homecoming")
     public UserStatusInRoom updateHomeComingStatus(@RequestParam HomeComingStatus homeComingStatus,
@@ -32,8 +40,13 @@ public class StatusController {
         userStatusInRoom.setHomeComingStatus(homeComingStatus);
         if (homeComingStatus.equals(HomeComingStatus.ON_THE_WAY_HOME)) {
             userStatusInRoom.setStartedAt(LocalDateTime.now());
+            GoodBamNotifier.sendNotificationToFriends(roomId, userId, homeComingMessage);
         } else if (homeComingStatus.equals(HomeComingStatus.ARRIVED_HOME)) {
             userStatusInRoom.setArrivedAt(LocalDateTime.now());
+            GoodBamNotifier.sendNotificationToFriends(roomId, userId, arrivedMessage);
+            /**
+             * 모두 도착했을 시 메시지 만들기
+             */
         }
         return userStatusInRoomRepository.save(userStatusInRoom);
     }

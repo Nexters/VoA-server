@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
-public class GoodBamScheduler {
+public class GoodBamNotifier {
 
     @Autowired
-    private UserStatusInRoomRepository userStatusInRoomRepository;
+    private static UserStatusInRoomRepository userStatusInRoomRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
 
     @Value("${confirm.home.first.message.to.me}")
     private String messageFirstToMe;
@@ -41,26 +41,45 @@ public class GoodBamScheduler {
         if (userStatusInRoom.getHomeComingStatus().equals(HomeComingStatus.ON_THE_WAY_HOME)) {
             switch (confirmationType) {
                 case FIRST:
-                    userRepository.findById(userId).get().sendNotification(messageFirstToMe);
+                    sendNotificationToMe(userId, messageFirstToMe);
                     userStatusInRoom.setConfirmationType(ConfirmationType.SECOND);
                     LocalDateTime tenMinutesFromNow = LocalDateTime.now().plusMinutes(10);
                     ScheduleTaskService.instance.schedule(userStatusInRoom.getTask(), tenMinutesFromNow);
                 case SECOND:
-                    userRepository.findById(userId).get().sendNotification(messageSecondToMe);
+                    sendNotificationToMe(userId, messageSecondToMe);
                     userStatusInRoom.setConfirmationType(ConfirmationType.THIRD);
                     LocalDateTime twentyMinutesFromNow = LocalDateTime.now().plusMinutes(20);
                     ScheduleTaskService.instance.schedule(userStatusInRoom.getTask(), twentyMinutesFromNow);
                 case THIRD:
-                    userRepository.findById(userId).get().sendNotification(messageThirdToMe);
-                    List<String> registrationTokens =
-                            userStatusInRoomRepository.findByRoomId(roomId).stream().
-                            map(UserStatusInRoom::getUser).
-                            map(User::getFcmRegisterationToken).
-                            filter(token -> !token.isEmpty()).collect(Collectors.toList());
-                    IOSPush.sendNotifications(registrationTokens, messageThirdToFriends);
+                    sendNotificationToMe(userId, messageThirdToMe);
+                    sendNotificationToFriends(roomId, userId, messageThirdToFriends);
                 default:
             }
         }
+        userStatusInRoomRepository.save(userStatusInRoom);
+    }
+
+    private static List<String> getFriendsRegistrationTokens(long roomId, long userId) {
+        List<String> registrationTokens =
+                userStatusInRoomRepository.findByRoomId(roomId).stream().
+                        map(UserStatusInRoom::getUser).
+                        filter(user -> user.getId() != userId).
+                        map(User::getFcmRegisterationToken).
+                        filter(token -> !token.isEmpty()).collect(Collectors.toList());
+        return registrationTokens;
+    }
+
+    public static void sendNotificationToMe(long userId, String message) {
+        String fcmToken = userRepository.findById(userId).get().getFcmRegisterationToken();
+        if (!fcmToken.isEmpty()) {
+            IOSPush.sendNotification(fcmToken, message);
+        }
+    }
+
+    public static void sendNotificationToFriends(long roomId, long userId, String message) {
+        List<String> registrationTokens = GoodBamNotifier.getFriendsRegistrationTokens(roomId, userId);
+        IOSPush.sendNotifications(registrationTokens, message);
+        //kakao push
     }
 
 }

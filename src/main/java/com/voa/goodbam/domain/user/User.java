@@ -35,12 +35,4 @@ public class User {
     @OneToMany(mappedBy = "target")
     private List<Messenger> receivedMessages;
 
-    public void sendNotification(String message) {
-
-        if (!fcmRegisterationToken.isEmpty()) {
-            IOSPush.sendNotification(fcmRegisterationToken, message);
-        }
-
-    }
-
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Table
@@ -35,12 +36,7 @@ public class Room {
     }
 
     private static String generateUniqueCode() {
-
-        return "";
-    }
-
-    private void sendLinksToRoomMembers() {
-
+        return LocalDateTime.now().toString();
     }
 
 }
