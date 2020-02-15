@@ -51,7 +51,7 @@ public class StatusController {
             GoodBamNotifier.sendNotificationToFriends(roomId, userId, homeComingMessage.replace("{name}", userName));
         } else if (homeComingStatus.equals(HomeComingStatus.ARRIVED_HOME)) {
             userStatusInRoom.setArrivedAt(LocalDateTime.now());
-            GoodBamNotifier.sendNotificationToFriends(roomId, userId, arrivedMessage.replace("{name}", userName);
+            GoodBamNotifier.sendNotificationToFriends(roomId, userId, arrivedMessage.replace("{name}", userName));
             /**
              * 모두 도착했을 시 메시지 만들기
              */
