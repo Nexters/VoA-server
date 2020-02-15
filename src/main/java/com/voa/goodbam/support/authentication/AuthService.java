@@ -36,13 +36,13 @@ public class AuthService
         }
     }
 
-    private ResponseEntity requestKaKaoAuth(String accesToken){
+    private ResponseEntity requestKaKaoAuth(String accessToken){
         String url = "https://kapi.kakao.com/v2/user/me";
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        headers.setBearerAuth(accesToken);
+        headers.setBearerAuth(accessToken);
         UriComponents builder = UriComponentsBuilder.fromHttpUrl(url)
                 .build(false);
 
