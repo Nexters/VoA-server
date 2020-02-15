@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/messenger")
+@CrossOrigin("*")
 public class MessengerController {
     private final MessengerRepository messengerRepository;
 
