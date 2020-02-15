@@ -8,12 +8,10 @@ import com.voa.goodbam.repository.UserStatusInRoomRepository;
 import com.voa.goodbam.support.ScheduleTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/status")
@@ -32,9 +30,11 @@ public class StatusController {
     private String allArrivedMessage;
 
     @PutMapping("/homecoming")
-    public UserStatusInRoom updateHomeComingStatus(@RequestParam HomeComingStatus homeComingStatus,
-                                                   @RequestParam long userId,
-                                                   @RequestParam long roomId) {
+    public UserStatusInRoom updateHomeComingStatus(@RequestBody Map<String, Object> req) {
+
+        HomeComingStatus homeComingStatus = HomeComingStatus.valueOf(req.get("homeComingStatus").toString());
+        long userId = Long.valueOf(req.get("userId").toString());
+        long roomId = Long.valueOf(req.get("roomId").toString());
 
         UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
         userStatusInRoom.setHomeComingStatus(homeComingStatus);
@@ -52,18 +52,23 @@ public class StatusController {
     }
 
     @PutMapping("/invitation")
-    public UserStatusInRoom updateInvitationStatus(@RequestParam InvitationStatus invitationStatus,
-                                                   @RequestParam long userId,
-                                                   @RequestParam long roomId) {
+    public UserStatusInRoom updateInvitationStatus(@RequestBody Map<String, Object> req) {
+        InvitationStatus invitationStatus = InvitationStatus.valueOf(req.get("invitationStatus").toString());
+        long userId = Long.valueOf(req.get("userId").toString());
+        long roomId = Long.valueOf(req.get("roomId").toString());
+
         UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
         userStatusInRoom.setInvitationStatus(invitationStatus);
         return userStatusInRoomRepository.save(userStatusInRoom);
     }
 
     @PutMapping("/time/remain")
-    public UserStatusInRoom updateRemainingTime(@RequestParam int timeRemaining,
-                                                @RequestParam long userId,
-                                                @RequestParam long roomId) {
+    public UserStatusInRoom updateRemainingTime(@RequestBody Map<String, Object> req) {
+
+        long timeRemaining = Integer.valueOf(req.get("timeRemaining").toString());
+        long userId = Long.valueOf(req.get("userId").toString());
+        long roomId = Long.valueOf(req.get("roomId").toString());
+
         UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
         LocalDateTime expectedArrivalTime = LocalDateTime.now().plusMinutes(timeRemaining);
         userStatusInRoom.setExpectedToArriveAt(expectedArrivalTime);

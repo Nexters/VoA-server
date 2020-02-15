@@ -37,10 +37,10 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @PostMapping(value="/new", consumes = "application/json", produces = "application/json")
+    @PostMapping(value="/new")
     public ResponseEntity room(@RequestBody Map<String, Object> req) {
         try {
-            long userId = Integer.valueOf(req.get("userId").toString());
+            long userId = Long.valueOf(req.get("userId").toString());
             String roomName = req.get("roomName").toString();
             Room newRoom = roomRepository.save(Room.create(roomName));
             userStatusInRoomRepository.save(UserStatusInRoom.create(newRoom, userId));
@@ -51,7 +51,9 @@ public class RoomController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity joinRoom(@RequestParam Long roomId, @RequestParam Long userId) {
+    public ResponseEntity joinRoom(@RequestBody Map<String, Object> req) {
+        long userId = Long.valueOf(req.get("userId").toString());
+        long roomId = Long.valueOf(req.get("roomId").toString());
         Optional<Room> room = roomRepository.findById(roomId);
         if (room.isPresent()) {
             userStatusInRoomRepository.save(UserStatusInRoom.create(room.get(), userId));
@@ -64,7 +66,9 @@ public class RoomController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity leaveRoom(@RequestParam Long roomId, @RequestParam Long userId) {
+    public ResponseEntity leaveRoom(@RequestBody Map<String, Object> req) {
+        long userId = Long.valueOf(req.get("userId").toString());
+        long roomId = Long.valueOf(req.get("roomId").toString());
         try {
             userStatusInRoomRepository.deleteByUserIdAndRoomId(userId, roomId);
         }catch(Exception exception){
