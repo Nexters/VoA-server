@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/status")
 public class StatusController {
 

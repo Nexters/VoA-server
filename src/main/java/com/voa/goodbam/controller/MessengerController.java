@@ -7,13 +7,11 @@ import com.voa.goodbam.domain.messenger.Messenger;
 import com.voa.goodbam.repository.MessengerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/messenger")
+@CrossOrigin("*")
 public class MessengerController {
     private final MessengerRepository messengerRepository;
 
