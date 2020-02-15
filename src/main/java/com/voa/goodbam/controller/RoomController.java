@@ -37,9 +37,11 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @PostMapping(value="/new")
-    public ResponseEntity room(@RequestParam String roomName, @RequestParam Long userId) {
+    @PostMapping(value="/new", consumes = "application/json", produces = "application/json")
+    public ResponseEntity room(@RequestBody Map<String, Object> req) {
         try {
+            long userId = Integer.valueOf(req.get("userId").toString());
+            String roomName = req.get("roomName").toString();
             Room newRoom = roomRepository.save(Room.create(roomName));
             userStatusInRoomRepository.save(UserStatusInRoom.create(newRoom, userId));
             return new ResponseEntity(DefaultResponse.of(StatusCode.CREATED, Message.OK, newRoom), HttpStatus.OK);
