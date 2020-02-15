@@ -30,7 +30,6 @@ public class UserService {
         if(platform.equals("Web")){
             isAppUser = false;
         }
-        System.out.println(kakaoId);
         Optional<User> optionalUser = userRepository.findUserByKakaoId(kakaoId);
         if(!optionalUser.isPresent()){
             User newUser = User.builder()
@@ -44,8 +43,11 @@ public class UserService {
         }else{
             User user = optionalUser.get();
             //update accessToken
-            user.setKakaoAccessToken(loginRequest.getKakaoToken());
-            userRepository.save(user);
+            if(user.getKakaoAccessToken()==null
+                    || !user.getKakaoAccessToken().equals(loginRequest.getKakaoToken())){
+                user.setKakaoAccessToken(loginRequest.getKakaoToken());
+                userRepository.save(user);
+            }
         }
 
         User user = optionalUser.get();
