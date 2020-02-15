@@ -41,15 +41,15 @@ public class AuthAop
     @Pointcut("execution(* com..*Controller.*(..))")
     public void controllerMethod(){}
 
-//    @Around("login() && (auth() || controllerMethod())")
-//    public Object around(final ProceedingJoinPoint pjp) throws Throwable
-//    {
-//        if(validToken() == false)
-//        {
-//            return new ResponseEntity(DefaultResponse.of(StatusCode.UNAUTHORIZED,Message.AUTH_FAIL), HttpStatus.OK);
-//        }
-//        return pjp.proceed(pjp.getArgs());
-//    }
+    @Around("login() && (auth() || controllerMethod())")
+    public Object around(final ProceedingJoinPoint pjp) throws Throwable
+    {
+        if(validToken() == false)
+        {
+            return new ResponseEntity(DefaultResponse.of(StatusCode.UNAUTHORIZED,Message.AUTH_FAIL), HttpStatus.OK);
+        }
+        return pjp.proceed(pjp.getArgs());
+    }
 
     public boolean validToken()
     {
