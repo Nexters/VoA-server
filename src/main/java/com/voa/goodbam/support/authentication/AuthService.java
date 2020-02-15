@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 public class AuthService
 {
     public User checkKaKaoAccessToken(String accessToken) {
+        System.out.println(accessToken);
         try {
             final ResponseEntity kakaoResponse = requestKaKaoAuth(accessToken);
             if(kakaoResponse==null){
