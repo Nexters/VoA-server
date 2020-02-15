@@ -32,4 +32,5 @@ public class User {
     private List<Messenger> sendMessages;
     @OneToMany(mappedBy = "target")
     private List<Messenger> receivedMessages;
+
 }
