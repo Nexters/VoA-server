@@ -2,6 +2,7 @@ package com.voa.goodbam.domain.scheduler;
 
 import com.voa.goodbam.domain.roomStatus.HomeComingStatus;
 import com.voa.goodbam.domain.roomStatus.UserStatusInRoom;
+import com.voa.goodbam.repository.UserRepository;
 import com.voa.goodbam.repository.UserStatusInRoomRepository;
 import com.voa.goodbam.support.ScheduleTaskService;
 import lombok.NoArgsConstructor;
@@ -15,19 +16,30 @@ public class GoodBamScheduler {
     @Autowired
     private UserStatusInRoomRepository userStatusInRoomRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public void schedule(long userId, long roomId, ConfirmationType confirmationType) {
         UserStatusInRoom userStatusInRoom = userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId);
         if (userStatusInRoom.getHomeComingStatus().equals(HomeComingStatus.ON_THE_WAY_HOME)) {
             switch (confirmationType) {
                 case FIRST:
-                    //send notification, are you home?
+                    String title = "귀가 예정";
+                    String body = "귀가 예정 시간이 되었습니다! 목적지에 도착했다면,\n" +
+                            "귀가방에서 귀가완료 버튼을 눌러주세요. 아직 도착하지\n" +
+                            "못했다면, 귀가 소요 시간을 연장해주세요.\n";
+                    userRepository.findById(userId).get().sendNotification(title, body);
 
                     userStatusInRoom.setConfirmationType(ConfirmationType.SECOND);
                     LocalDateTime tenMinutesFromNow = LocalDateTime.now().plusMinutes(10);
                     ScheduleTaskService.instance.schedule(userStatusInRoom.getTask(), tenMinutesFromNow);
                 case SECOND:
 
-                    //send notification, are you home?
+//                    String title = "귀가 예정";
+//                    String body = "귀가 예정 시간이 되었습니다! 목적지에 도착했다면,\n" +
+//                            "귀가방에서 귀가완료 버튼을 눌러주세요. 아직 도착하지\n" +
+//                            "못했다면, 귀가 소요 시간을 연장해주세요.\n";
+                    userRepository.findById(userId).get().sendNotification(title, body);
 
                     userStatusInRoom.setConfirmationType(ConfirmationType.THIRD);
                     LocalDateTime twentyMinutesFromNow = LocalDateTime.now().plusMinutes(20);
