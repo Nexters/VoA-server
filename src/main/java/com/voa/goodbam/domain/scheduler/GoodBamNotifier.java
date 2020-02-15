@@ -65,13 +65,13 @@ public class GoodBamNotifier {
                         map(UserStatusInRoom::getUser).
                         filter(user -> user.getId() != userId).
                         map(User::getFcmRegisterationToken).
-                        filter(token -> !token.isEmpty()).collect(Collectors.toList());
+                        filter(token -> token==null).collect(Collectors.toList());
         return registrationTokens;
     }
 
     public static void sendNotificationToMe(long userId, String message) {
         String fcmToken = userRepository.findById(userId).get().getFcmRegisterationToken();
-        if (!fcmToken.isEmpty()) {
+        if (fcmToken!=null) {
             IOSPush.sendNotification(fcmToken, message);
         }
     }
