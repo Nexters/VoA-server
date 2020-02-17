@@ -43,11 +43,14 @@ public class UserService {
         }else{
             User user = optionalUser.get();
             //update accessToken
+            user.setAppUser(isAppUser);
+            user.setOs(platform);
+            user.setProfileImage(profileImage);
             if(user.getKakaoAccessToken()==null
                     || !user.getKakaoAccessToken().equals(loginRequest.getKakaoToken())){
                 user.setKakaoAccessToken(loginRequest.getKakaoToken());
-                userRepository.save(user);
             }
+            userRepository.save(user);
         }
 
         User user = optionalUser.get();

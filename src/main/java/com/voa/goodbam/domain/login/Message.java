@@ -14,7 +14,8 @@ public enum Message {
     NO_CONTENT("데이터 없음"),
 
     ROOM_JOIN_SUCCESS("방 참여 성공"),
-    ROOM_DESTROYED("삭제된 방 참여 실패");
+    ROOM_DESTROYED("삭제된 방 참여 실패"),
+    ROOM_ALREADY_JOIN("이미 참여된 방입니다.");
 
     private final String message;
 
