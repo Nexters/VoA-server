@@ -35,7 +35,7 @@ public class UserController {
     public ResponseEntity updateFcmToken(@RequestBody Map<String, Object> req, @RequestHeader("Platform") String platform) {
         try {
             String fcmToken = req.get("fcmToken").toString();
-            long userId = Long.valueOf(req.get("userId").toString());
+            Long userId = Long.valueOf(req.get("userId").toString());
             User user = userRepository.findUserById(userId).get();
             user.setOs(platform);
             user.setFcmRegisterationToken(fcmToken);
