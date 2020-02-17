@@ -62,6 +62,9 @@ public class RoomController {
     public ResponseEntity joinRoom(@RequestBody Map<String, Object> req) {
         long userId = Long.valueOf(req.get("userId").toString());
         long roomId = Long.valueOf(req.get("roomId").toString());
+        if(userStatusInRoomRepository.findByUserIdAndRoomId(userId, roomId)!=null){
+            return new ResponseEntity(DefaultResponse.of(StatusCode.ROOM_ALREADY_JOIN, Message.ROOM_ALREADY_JOIN), HttpStatus.OK);
+        }
         Optional<Room> room = roomRepository.findById(roomId);
         if (room.isPresent()) {
             userStatusInRoomRepository.save(UserStatusInRoom.create(room.get(), userId));

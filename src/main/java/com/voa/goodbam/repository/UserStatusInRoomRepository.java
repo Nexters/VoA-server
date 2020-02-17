@@ -14,5 +14,4 @@ public interface UserStatusInRoomRepository extends CrudRepository<UserStatusInR
     UserStatusInRoom findByUserIdAndRoomId(long userId, long roomId);
 
     void deleteByUserIdAndRoomId(long userId, long roomId);
-
 }
