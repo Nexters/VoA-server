@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findUserByKakaoId(String kakaoId);
+
+    Optional<User> findUserById(Long id);
 }
